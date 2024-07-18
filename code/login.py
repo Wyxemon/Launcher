@@ -9,6 +9,8 @@ class Ventana:
     root.title("Wyxemon Launcher")
     root.config(bg="gray10")
     root.iconbitmap("Launcher/image/Logo.ico")
+    # Desactiva el botón de cierre
+    root.protocol("WM_DELETE_WINDOW", lambda: None)
 
 class ImagenFondo(Ventana):
     img = ImageTk.PhotoImage(Image.open("Launcher/image/Login.png"))
@@ -33,8 +35,18 @@ class InterfazInicio(Ventana):
         
     def iniciar_sesion(self):
         nombre_usuario = self.entrada_inicio.get()  # Obtener el texto ingresado
-        with open("Launcher/log/login_name.txt", "w", encoding="UTF-8") as archivo:
-            archivo.write(nombre_usuario)
+        if nombre_usuario == "Ingrese su nombre":
+            error_label = tk.Label(Ventana.root, text="# Error de usuario", bg="gray10", fg="red")
+            error_label.place(x=437, y=150)
+            
+        elif nombre_usuario == "":
+            error_label = tk.Label(Ventana.root, text="# Error de usuario", bg="gray10", fg="red")
+            error_label.place(x=437, y=150)
+        
+        else:
+            with open("Launcher/log/login_name.txt", "w", encoding="UTF-8") as archivo:
+                archivo.write(nombre_usuario)
+                Ventana.root.destroy()
         
 class Version:
     def __init__(self, version, posicion):
